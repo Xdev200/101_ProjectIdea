@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Weather App</title>
+        <style>
+            /* Set the size of the div element that contains the map */
+           #map {
+             height: 400px;  /* The height is 400 pixels */
+             width: 100%;  /* The width is the width of the web page */
+            }
+         </style>
+    </head>
+    <body>
+        <div>
+            <div>
+                <h3>Find My Location</h3>
+                <button id='findMe'>Auto Detect</button>
+                <br/><br/>
+                <p id='status'></p>
+                <br/><br/>
+                <select id='location'>
+                    <option value='0'>SELECT YOU LOCATION</option>
+                </select>
+            </div>
+            <div id="map"></div>
+        </div>
+        <script>
+            function geoFineMe(){
+                function success(position){
+                    const latitude  = position.coords.latitude
+                    const longitude = position.coords.longitude
+
+                    alert(`Your LongLat is: lat ${latitude},long ${longitude}`)
+                    // function initMap() {
+                        // The location of Uluru
+                        var uluru = {lat: latitude, lng: longitude};
+                        // The map, centered at Uluru
+                        var map = new google.maps.Map(
+                            document.getElementById('map'), {zoom: 4, center: uluru});
+                        // The marker, positioned at Uluru
+                        var marker = new google.maps.Marker({position: uluru, map: map});
+                    // }
+                }
+                function error() {
+                    status.textContent = 'Unable to retrieve your location';
+                }
+
+                if(!navigator.geolocation) {
+                    status.textContent = 'Geolocation is not supported by your browser';
+                } else {
+                    status.textContent = 'Locating…';
+                    navigator.geolocation.getCurrentPosition(success, error);
+                }
+            }
+            document.querySelector('#findMe').addEventListener('click', geoFineMe);
+        </script>
+       <script async defer
+       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap">
+       </script>
+    </body>
+</html>
